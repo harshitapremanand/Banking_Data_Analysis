@@ -230,3 +230,161 @@ print(df[transformed_columns].count())
 
 print("\nFinal Dataset Shape:")
 print(df.shape)
+
+# ==========================================
+# DATA ANALYSIS
+# ==========================================
+
+print("\n" + "=" * 60)
+print("BANKING DATA ANALYSIS")
+print("=" * 60)
+
+# Load cleaned dataset
+analysis_df = pd.read_csv(
+    "dataset/bank-full-cleaned.csv",
+    sep=";"
+)
+
+print("\nAnalysis dataset loaded successfully!")
+print("Dataset Shape:", analysis_df.shape)
+
+# Total account balance analysis
+
+total_balance = analysis_df["balance"].sum()
+average_balance = analysis_df["balance"].mean()
+minimum_balance = analysis_df["balance"].min()
+maximum_balance = analysis_df["balance"].max()
+
+print("\nACCOUNT BALANCE ANALYSIS:")
+print("Total Account Balance:", total_balance)
+print("Average Account Balance:", round(average_balance, 2))
+print("Minimum Account Balance:", minimum_balance)
+print("Maximum Account Balance:", maximum_balance)
+
+# Customer activity by job type
+
+customer_activity = analysis_df["job"].value_counts()
+
+print("\nCUSTOMER ACTIVITY BY JOB TYPE:")
+print(customer_activity)
+
+# Loan information analysis
+
+loan_counts = analysis_df["loan"].value_counts()
+
+print("\nLOAN INFORMATION:")
+print(loan_counts)
+
+print("\nLoan Percentages:")
+print((analysis_df["loan"].value_counts(normalize=True) * 100).round(2))
+
+# Housing loan analysis
+
+housing_counts = analysis_df["housing"].value_counts()
+
+print("\nHOUSING LOAN INFORMATION:")
+print(housing_counts)
+
+print("\nHousing Loan Percentages:")
+print((analysis_df["housing"].value_counts(normalize=True) * 100).round(2))
+
+# Customer contact analysis
+
+contact_counts = analysis_df["contact"].value_counts()
+
+print("\nCUSTOMER CONTACT ANALYSIS:")
+print(contact_counts)
+
+print("\nContact Percentages:")
+print((analysis_df["contact"].value_counts(normalize=True) * 100).round(2))
+
+# Campaign outcome analysis
+
+campaign_outcome = analysis_df["y"].value_counts()
+
+print("\nCAMPAIGN OUTCOME:")
+print(campaign_outcome)
+
+print("\nCampaign Outcome Percentages:")
+print((analysis_df["y"].value_counts(normalize=True) * 100).round(2))
+
+# Customer activity by marital status
+
+marital_activity = analysis_df["marital"].value_counts()
+
+print("\nCUSTOMER ACTIVITY BY MARITAL STATUS:")
+print(marital_activity)
+
+print("\nMarital Status Percentages:")
+print((analysis_df["marital"].value_counts(normalize=True) * 100).round(2))
+
+# Customer activity by education level
+
+education_activity = analysis_df["education"].value_counts()
+
+print("\nCUSTOMER ACTIVITY BY EDUCATION:")
+print(education_activity)
+
+print("\nEducation Percentages:")
+print((analysis_df["education"].value_counts(normalize=True) * 100).round(2))
+
+# Customer activity by age group
+
+analysis_df["Age_Group"] = np.select(
+    [
+        analysis_df["age"] < 30,
+        analysis_df["age"].between(30, 49),
+        analysis_df["age"].between(50, 64),
+        analysis_df["age"] >= 65
+    ],
+    [
+        "Young",
+        "Adult",
+        "Senior",
+        "Elderly"
+    ],
+    default="Unknown"
+)
+
+age_group_counts = analysis_df["Age_Group"].value_counts()
+
+print("\nCUSTOMER ACTIVITY BY AGE GROUP:")
+print(age_group_counts)
+
+# Average account balance by job
+
+average_balance_by_job = (
+    analysis_df.groupby("job")["balance"]
+    .mean()
+    .sort_values(ascending=False)
+)
+
+print("\nAVERAGE ACCOUNT BALANCE BY JOB:")
+print(average_balance_by_job.round(2))
+
+# Loan status vs campaign outcome
+
+loan_campaign = pd.crosstab(
+    analysis_df["loan"],
+    analysis_df["y"]
+)
+
+print("\nLOAN STATUS VS CAMPAIGN OUTCOME:")
+print(loan_campaign)
+
+# ==========================================
+# FINAL ANALYSIS VALIDATION
+# ==========================================
+
+print("\n" + "=" * 60)
+print("FINAL ANALYSIS VALIDATION")
+print("=" * 60)
+
+print("\nDataset Shape:")
+print(analysis_df.shape)
+
+print("\nMissing Values:")
+print(analysis_df.isnull().sum())
+
+print("\nDuplicate Rows:")
+print(analysis_df.duplicated().sum())
