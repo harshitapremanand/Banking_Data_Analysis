@@ -308,8 +308,6 @@ print(campaign_outcome)
 print("\nCampaign Outcome Percentages:")
 print((analysis_df["y"].value_counts(normalize=True) * 100).round(2))
 
-# Customer activity by marital status
-
 marital_activity = analysis_df["marital"].value_counts()
 
 print("\nCUSTOMER ACTIVITY BY MARITAL STATUS:")
@@ -318,7 +316,6 @@ print(marital_activity)
 print("\nMarital Status Percentages:")
 print((analysis_df["marital"].value_counts(normalize=True) * 100).round(2))
 
-# Customer activity by education level
 
 education_activity = analysis_df["education"].value_counts()
 
@@ -327,8 +324,6 @@ print(education_activity)
 
 print("\nEducation Percentages:")
 print((analysis_df["education"].value_counts(normalize=True) * 100).round(2))
-
-# Customer activity by age group
 
 analysis_df["Age_Group"] = np.select(
     [
@@ -351,7 +346,6 @@ age_group_counts = analysis_df["Age_Group"].value_counts()
 print("\nCUSTOMER ACTIVITY BY AGE GROUP:")
 print(age_group_counts)
 
-# Average account balance by job
 
 average_balance_by_job = (
     analysis_df.groupby("job")["balance"]
@@ -362,8 +356,6 @@ average_balance_by_job = (
 print("\nAVERAGE ACCOUNT BALANCE BY JOB:")
 print(average_balance_by_job.round(2))
 
-# Loan status vs campaign outcome
-
 loan_campaign = pd.crosstab(
     analysis_df["loan"],
     analysis_df["y"]
@@ -371,10 +363,6 @@ loan_campaign = pd.crosstab(
 
 print("\nLOAN STATUS VS CAMPAIGN OUTCOME:")
 print(loan_campaign)
-
-# ==========================================
-# FINAL ANALYSIS VALIDATION
-# ==========================================
 
 print("\n" + "=" * 60)
 print("FINAL ANALYSIS VALIDATION")
@@ -388,3 +376,18 @@ print(analysis_df.isnull().sum())
 
 print("\nDuplicate Rows:")
 print(analysis_df.duplicated().sum())
+
+# ==========================================
+# LOAD - SAVE PROCESSED DATASET
+# ==========================================
+
+output_file = "dataset/bank-full-cleaned.csv"
+
+df.to_csv(output_file, sep=";", index=False)
+
+print("\n" + "=" * 60)
+print("ETL LOAD")
+print("=" * 60)
+print("Processed dataset saved successfully!")
+print("Output file:", output_file)
+print("Records loaded:", len(df))
